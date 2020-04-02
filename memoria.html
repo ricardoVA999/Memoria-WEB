@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+  <head>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  </head>  
+  <body style="height: inherit">
+    <div id="root" style="height: inherit"></div>  
+    
+    <script type="text/babel">
+
+        const All = () => {
+          const style = {
+            width: "inherit",
+            height: "inherit",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }
+          return(
+            <div style = {style}>
+              <Grid />
+            </div>
+          )
+        }
+        const Grid = () => {
+          const [todasCartas, setTodasCartas] = React.useState(cardimages.map((card,i)=> ({imagen:card, isFlipped:false, id:i})))
+          console.log(todasCartas)
+          const style = {
+              backgroundImage: "url(http://www.hdfondos.eu/pictures/2012/0220/1/black-textures-background-1920x1200-wallpaper-506983.jpg)",
+              backgroundSize: "cover",
+              display: "grid",
+              gridTemplateColumns: "130px 130px 130px 130px", 
+              gridTemplateRows: "180px 180px 180px 180px", 
+              justifyItems: "center",
+              alignItems: "center",
+              gridGap: "10px",
+              padding: "10px"
+              }
+          const flip = index => {
+            const myCards = [...todasCartas]
+            if(myCards[index].isFlipped){
+              myCards[index].isFlipped = false
+            }else{
+              myCards[index].isFlipped = true
+            }
+            setTodasCartas(myCards)
+          }
+              return (
+                <div style={style}>
+                  {todasCartas.map((carta,i)=> <Carta key={carta.id} imagenatras={carta.imagen} setCardFlip={()=> flip(i)} isFlipped={carta.isFlipped}/>)}
+                </div>
+                )
+        }
+
+
+        var cardimages = ["https://pm1.narvii.com/6225/12d5a7a80029feca66fbc207339a472614e32c6f_00.jpg", "https://www.ecured.cu/images/2/27/Slifer_cartd.jpeg",
+        "https://i.pinimg.com/originals/0b/3a/35/0b3a3535fce27a486d8b6b9b22144fe5.jpg", "https://i.pinimg.com/originals/49/6a/48/496a48d22ee735e42475ef6bf6e5c07e.jpg",
+        "https://i.pinimg.com/originals/17/ff/b0/17ffb0e2bb551c488f57009c9923b737.jpg", "https://vignette.wikia.nocookie.net/yugiohenespanol/images/e/ef/Drag%C3%B3n_blanco_de_ojos_azules.jpg/revision/latest/scale-to-width-down/340?cb=20180207212403&path-prefix=es",
+        "https://pm1.narvii.com/6432/4a2a32476cc7d8ac06331ac57356e3f02e2ae7ee_hq.jpg", "https://pm1.narvii.com/6184/a12b0cde4a2df4b34c253efb2b67db09a6df1831_hq.jpg",
+        "https://pm1.narvii.com/6225/12d5a7a80029feca66fbc207339a472614e32c6f_00.jpg", "https://www.ecured.cu/images/2/27/Slifer_cartd.jpeg",
+        "https://i.pinimg.com/originals/0b/3a/35/0b3a3535fce27a486d8b6b9b22144fe5.jpg", "https://i.pinimg.com/originals/49/6a/48/496a48d22ee735e42475ef6bf6e5c07e.jpg",
+        "https://i.pinimg.com/originals/17/ff/b0/17ffb0e2bb551c488f57009c9923b737.jpg", "https://vignette.wikia.nocookie.net/yugiohenespanol/images/e/ef/Drag%C3%B3n_blanco_de_ojos_azules.jpg/revision/latest/scale-to-width-down/340?cb=20180207212403&path-prefix=es",
+        "https://pm1.narvii.com/6432/4a2a32476cc7d8ac06331ac57356e3f02e2ae7ee_hq.jpg", "https://pm1.narvii.com/6184/a12b0cde4a2df4b34c253efb2b67db09a6df1831_hq.jpg"]
+    
+
+
+
+        const Carta = ({imagenatras, isFlipped, setCardFlip }) => {
+          const style = {
+              width: "100%",
+              height: "100%",
+              borderRadius: "5%",
+              position: "relative",
+              transition: "all 1s ease",
+              transform: "perspective(600px)",
+              transformStyle:"preserve-3d",
+              transition:"transform 1s",
+          }
+          function transtition(){
+              if(isFlipped){
+                return "rotateY(90deg)"
+              }else{
+                return "rotateY(0deg)"
+              }
+            }
+            function regreso(){
+              if(isFlipped){
+                return "rotateY(0deg)"
+              }else{
+                return "rotateY(90deg)"
+              }
+            }
+          const frente = {
+                height:"180px",
+                position:"absolute",
+                backfaceVisibility:"hidden",
+                transform: transtition(),
+                transition:`transform 250ms linear`,
+                transitionDelay: isFlipped ? "0s": "250ms",
+            }
+            const atras = {
+                height:"180px",
+                position:"absolute",
+                backfaceVisibility:"hidden",
+                transform: regreso(),
+                transition:`transform 250ms linear`,
+                transitionDelay: isFlipped ?"250ms": "0s",
+            }
+            return(
+                <div onClick={setCardFlip} style={style}>
+                    <img src={imagenatras} style={atras}></img>  
+                    <img src="https://k60.kn3.net/taringa/C/8/C/0/4/4/OSarracino/582.png" style={frente}></img>                   
+                </div>
+        )
+        }
+
+
+
+
+
+        const Frente = () => {
+          const style = {
+            height: "180px",
+            position: "absolute",
+            backfaceVisibility: "hidden"
+          }
+          return <img src="https://k60.kn3.net/taringa/C/8/C/0/4/4/OSarracino/582.png" style={style}></img>
+        }
+
+
+        ReactDOM.render(
+          <All />,
+          document.getElementById("root")
+        )
+    
+    </script>
+  </body>
+</html>
