@@ -25,7 +25,12 @@
             </div>
           )
         }
+        function shuffle(array) {
+          array.sort(() => Math.random() - 0.5);
+        }
+
         const Grid = () => {
+          shuffle(cardimages)
           const [todasCartas, setTodasCartas] = React.useState(cardimages.map((card,i)=> ({imagen:card, isFlipped:false, id:i})))
           console.log(todasCartas)
           const style = {
