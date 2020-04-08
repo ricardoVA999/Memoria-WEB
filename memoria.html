@@ -17,7 +17,9 @@
             height: "inherit",
             display: "flex",
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
+            backgroundImage: "url(https://www.konami.com/yugioh/duel_links/images/gate/gate_mainvisual.jpg)",
+            backgroundSize: "cover",
           }
           return(
             <div style = {style}>
@@ -34,8 +36,6 @@
           const [todasCartas, setTodasCartas] = React.useState(cardimages.map((card,i)=> ({imagen:card, isFlipped:false, id:i})))
           console.log(todasCartas)
           const style = {
-              backgroundImage: "url(http://www.hdfondos.eu/pictures/2012/0220/1/black-textures-background-1920x1200-wallpaper-506983.jpg)",
-              backgroundSize: "cover",
               display: "grid",
               gridTemplateColumns: "130px 130px 130px 130px", 
               gridTemplateRows: "180px 180px 180px 180px", 
@@ -79,40 +79,32 @@
               height: "100%",
               borderRadius: "5%",
               position: "relative",
-              transition: "all 1s ease",
-              transform: "perspective(600px)",
+              transition: "transform 0.6s",
+              perspective: "600px",
               transformStyle:"preserve-3d",
-              transition:"transform 1s",
+              transform: transtition()
           }
           function transtition(){
               if(isFlipped){
-                return "rotateY(90deg)"
+                return "rotateY(180deg)"
               }else{
                 return "rotateY(0deg)"
-              }
-            }
-            function regreso(){
-              if(isFlipped){
-                return "rotateY(0deg)"
-              }else{
-                return "rotateY(90deg)"
               }
             }
           const frente = {
                 height:"180px",
                 position:"absolute",
-                backfaceVisibility:"hidden",
-                transform: transtition(),
-                transition:`transform 250ms linear`,
+                backfaceVisibility: "hidden",
+                transition:"transform 250ms linear",
                 transitionDelay: isFlipped ? "0s": "250ms",
             }
             const atras = {
                 height:"180px",
                 position:"absolute",
-                backfaceVisibility:"hidden",
-                transform: regreso(),
-                transition:`transform 250ms linear`,
+                backfaceVisibility: "hidden",
+                transition:"transform 250ms linear",
                 transitionDelay: isFlipped ?"250ms": "0s",
+                transform: "rotateY(180deg)"
             }
             return(
                 <div onClick={setCardFlip} style={style}>
@@ -121,20 +113,6 @@
                 </div>
         )
         }
-
-
-
-
-
-        const Frente = () => {
-          const style = {
-            height: "180px",
-            position: "absolute",
-            backfaceVisibility: "hidden"
-          }
-          return <img src="https://k60.kn3.net/taringa/C/8/C/0/4/4/OSarracino/582.png" style={style}></img>
-        }
-
 
         ReactDOM.render(
           <All />,
