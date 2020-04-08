@@ -18,7 +18,7 @@
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            backgroundImage: "url(https://www.konami.com/yugioh/duel_links/images/gate/gate_mainvisual.jpg)",
+            backgroundImage: "url(https://cutewallpaper.org/21/yugioh-card-backgrounds/Showcase-Yu-Gi-Oh-Legacy-of-the-Duelist.jpg)",
             backgroundSize: "cover",
           }
           return(
@@ -33,29 +33,74 @@
 
         const Grid = () => {
           shuffle(cardimages)
-          const [todasCartas, setTodasCartas] = React.useState(cardimages.map((card,i)=> ({imagen:card, isFlipped:false, id:i})))
-          console.log(todasCartas)
+          const [totalCards, setTotalCards] = React.useState(cardimages.map((card,i)=> ({imagen:card, isFlipped:false, id:i})))
+          const [flippedCards, setLastFlipped] = React.useState([])
+          const [pairs, setpairs] = React.useState(0)
+          const [moves, setmoves] = React.useState(0)
+        
           const style = {
               display: "grid",
               gridTemplateColumns: "130px 130px 130px 130px", 
               gridTemplateRows: "180px 180px 180px 180px", 
               justifyItems: "center",
               alignItems: "center",
-              gridGap: "10px",
+              gridColumnGap: "50px",
+              gridRowGap: "10px",
               padding: "10px"
               }
-          const flip = index => {
-            const myCards = [...todasCartas]
-            if(myCards[index].isFlipped){
-              myCards[index].isFlipped = false
-            }else{
-              myCards[index].isFlipped = true
+          const styleContainer = {
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center"
+              }
+          const styleCounter = {
+              fontFamily: "'Comic Sans MS', cursive, sans-serif",
+              fontSize: "30px",
+              letterSpacing: "0.2px",
+              wordSpacing: "-5px",
+              color: "#FFFFFF",
+              fontSeight: "700"
             }
-            setTodasCartas(myCards)
+            const styleWin = {
+              fontFamily: "'Comic Sans MS', cursive, sans-serif",
+              fontSize: "80px",
+              letterSpacing: "0.2px",
+              wordSpacing: "-0.8px",
+              color: "#FFBE2C",
+              fontSeight: "700",
+              position: "absolute",
+              textShadow: "-4px -1px 0px #000000"
+            }
+          const flip = index => {
+            if(!totalCards[index].isFlipped){
+              const myCards = [...totalCards]
+              myCards[index].isFlipped = true
+              flippedCards.push(index)
+              setmoves(moves+1)
+              if(flippedCards.length == 2){
+                if(myCards[flippedCards[0]].imagen == myCards[flippedCards[1]].imagen){
+                  setpairs(pairs+1)
+                }else{
+                  setTimeout(()=>{
+                    const myCards = [...totalCards]
+                    myCards[flippedCards[0]].isFlipped = false
+                    myCards[flippedCards[1]].isFlipped = false
+                    setTotalCards(myCards)}, 1000)
+                }
+                setLastFlipped([])
+              }
+              setTotalCards(myCards)
+            }
           }
               return (
-                <div style={style}>
-                  {todasCartas.map((carta,i)=> <Carta key={carta.id} imagenatras={carta.imagen} setCardFlip={()=> flip(i)} isFlipped={carta.isFlipped}/>)}
+                <div style = {styleContainer}>
+                  <Title/>
+                  <h1 style = {styleCounter}>Cantidad de movimientos: {moves}</h1>
+                  <div style={style}>
+                    {totalCards.map((carta,i)=> <Carta key={carta.id} imagenatras={carta.imagen} setCardFlip={()=> flip(i)} isFlipped={carta.isFlipped}/>)}
+                  </div>
+                  {(pairs == 8) ? <h1 style = {styleWin}>Felicidades has ganado</h1> : null}
                 </div>
                 )
         }
@@ -71,7 +116,22 @@
         "https://pm1.narvii.com/6432/4a2a32476cc7d8ac06331ac57356e3f02e2ae7ee_hq.jpg", "https://pm1.narvii.com/6184/a12b0cde4a2df4b34c253efb2b67db09a6df1831_hq.jpg"]
     
 
+        const Title = () =>{
+            const style = {
+              fontFamily: "'Comic Sans MS', cursive, sans-serif",
+              fontSize: "40px",
+              letterSpacing: "0.2px",
+              wordSpacing: "-5px",
+              color: "#FFFFFF",
+              fontSeight: "700"
+            }
+            return(
+                <div>
+                    <h1 style = {style}>Yu-Gi-Oh! Memoria</h1>
+                </div>
+            )
 
+        }
 
         const Carta = ({imagenatras, isFlipped, setCardFlip }) => {
           const style = {
